@@ -1,0 +1,42 @@
+{
+  "name": "@a-a-game-studio/CcCvStoreNodeJs",
+  "version": "1.0.0",
+  "description": "CcCvStore client",
+  "main": "lib/src/index.js",
+  "types": "lib/src/index.d.ts",
+  "engines": {
+    "node": ">=12"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elexfreeman/CcCv-store-nodejs.git"
+  },
+  "keywords": [
+    "core"
+  ],
+  "author": "elexfreeman",
+  "license": "GNU General Public License v3.0",
+  "bugs": {
+    "url": "https://github.com/elexfreeman/CcCv-store-nodejs/issues"
+  },
+  "homepage": "https://github.com/elexfreeman/CcCv-store-nodejs#readme",
+  "devDependencies": {
+    "@types/node": "^11.15.12",
+    "cross-env": "^5.2.1",
+    "typescript": "^3.8.3"
+  },
+  "scripts": {
+    "release": "./sh/release.sh",
+    "build": "tsc",
+    "test": "ts-mocha",
+    "en": "./node_modules/.bin/ts-node ./src/en.ts"
+  },
+  "dependencies": {},
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  }
+}
