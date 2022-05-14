@@ -3,6 +3,22 @@ import * as events from 'events';
 
 class CcCvEmitter extends events.EventEmitter {}
 
+const prepareStringSend = (data: string): string => {
+  if (!data) {
+    return '';
+  }
+
+  return data.replace('|', '\|');
+}
+
+const prepareStringRecerve = (data: string): string => {
+  if (!data) {
+    return '';
+  }
+
+  return data.replace('\|', '|');
+}
+
 class CcCvDriver {
 
   private host: string = 'localhost';
@@ -35,30 +51,32 @@ class CcCvDriver {
   }
 
   setData(key: string, data: string): Promise<boolean> {
-    const d = `1|${key}|${data}`
-    this.client.write(d);
+    this.client.write(`1|${prepareStringSend(key)}|${prepareStringSend(data)}`);
     return new Promise((resolve) => {
       this.emitter.on('event', (binData) => {
         const data = binData.toString();
         // example 2|mykey|mydata
-        let aData = data.split('|');
-        if ((aData[0] == '1') && (aData[1] == key)) {
-          resolve(true);
+        const aData = data.split('|');
+        if (aData.length == 2) {
+          if ((aData[0] == '1') && (prepareStringRecerve(aData[1]) == key)) {
+            resolve(true);
+          }
         }
       })
     });
   }
 
-
   removeData(key: string): Promise<string> {
-    this.client.write(`3|${key}`);
+    this.client.write(`3|${prepareStringSend(key)}`);
     return new Promise((resolve) => {
       this.emitter.on('event', (binData) => {
-        let data = binData.toString();
+        const data = binData.toString();
         // example 3|mykey|
-        let aData = data.split('|');
-        if ((aData[0] == '3') && (aData[1] == key)) {
-          resolve(aData[2]);
+        const aData = data.split('|');
+        if (aData.length == 2) {
+          if ((aData[0] == '3') && (prepareStringRecerve(aData[1]) == key)) {
+            resolve(prepareStringRecerve(aData[2]));
+          }
         }
       })
     });
@@ -67,11 +85,13 @@ class CcCvDriver {
   getData(key: string): Promise<string> {
     return new Promise((resolve) => {
       this.emitter.on('event', (binData) => {
-        let data = binData.toString();
+        const data = binData.toString();
         // example 2|mykey|mydata
-        let aData = data.split('|');
-        if ((aData[0] == '2') && (aData[1] == key)) {
-          resolve(aData[2]);
+        const aData = data.split('|');
+        if (aData.length == 2) {
+          if ((aData[0] == '2') && (prepareStringRecerve(aData[1]) == key)) {
+            resolve(prepareStringRecerve(aData[2]));
+          }
         }
       })
     });
