@@ -58,7 +58,6 @@ class CcCvDriver {
       return new Promise((resolve, reject) => reject('NOT connected'));
     }
     const msg = `1|${prepareStringSend(key)}|${prepareStringSend(data)}`;
-    console.log(msg);
     this.client.write(msg);
     return new Promise((resolve) => {
       const event = (binData: any) => {
@@ -80,7 +79,7 @@ class CcCvDriver {
     if (!this.isConnected) {
       return new Promise((resolve, reject) => reject('NOT connected'));
     }
-    this.client.write(`3|${prepareStringSend(key)}`);
+    this.client.write(`3|${prepareStringSend(key)}|`);
     return new Promise((resolve) => {
       const event = (binData: any) => {
         const data = binData.toString();
@@ -108,7 +107,6 @@ class CcCvDriver {
         const data = binData.toString();
         // example 2|mykey|mydata
         const aData = prepareStringRecerve(data).split('|');
-        console.log('aData', data);
         if (aData.length > 1) {
           if ((aData[0] == '2') && (aData[1] == key)) {
             this.emitter.removeListener('event', event);
