@@ -31,7 +31,7 @@
   "scripts": {
     "release": "./sh/release.sh",
     "build": "tsc",
-    "test": "ts-mocha",
+    "test": "npm run build && node ./lib/test.js",
     "en": "./node_modules/.bin/ts-node ./src/en.ts"
   },
   "dependencies": {},
